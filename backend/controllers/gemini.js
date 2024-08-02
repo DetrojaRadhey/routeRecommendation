@@ -7,7 +7,7 @@ module.exports.getSuggestion = async (req, res) => {
         );
 
         async function run() {
-            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash", safetySettings: [ { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" } ] });
 
             const prompt = `I have created one website in which user sent his query
                 and your task is you have to simply return the url of my website which is provided here:
@@ -22,7 +22,7 @@ module.exports.getSuggestion = async (req, res) => {
                 Output formate: /xyz. No need to write extra line only return one of this link & you must have to return one link.`;
             
             const result = await model.generateContent(prompt);
-            const response = await result.response;
+            const response = result.response;
             let text = response.text();
             text = text.slice(0,-2);
             res.status(201).send({ url: text });
