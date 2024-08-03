@@ -4,7 +4,7 @@ const groq = require("../controllers/groq");
 const gemini = require("../controllers/gemini");
 
 // to get AI suggestion
-// router.post("/", groq.groq);
+// router.post("/", groq.getSuggestion);
 router.post("/", gemini.getSuggestion);
 
 module.exports = router;

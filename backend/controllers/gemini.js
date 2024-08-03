@@ -10,7 +10,7 @@ module.exports.getSuggestion = async (req, res) => {
             const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash", safetySettings: [ { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" } ] });
 
             const prompt = `I have created one website in which user sent his query
-                and your task is you have to simply return the url of my website which is provided here:
+                and your task is you have to simply return theindex of url of my website which is provided here:
                 1) / : this is for the home route or landing page of the website.
                 2) /login : this is the login page of our website.
                 3) /signup : this is the signup page of our website.
@@ -18,13 +18,13 @@ module.exports.getSuggestion = async (req, res) => {
                 5) /services : this is the page on which all bussiness product or main content appears.
                 6) /career : this is the page on which you can found jobs, research & internship opportunity.
                 7) /profile : this is the page on which you can show and edit your personal details on website.
-                you have to just return a single url among mentioned above which description is match with user's query: ${req.body.query}
-                Output formate: /xyz. No need to write extra line only return one of this link & you must have to return one link.`;
+                you have to just return a single number match with the index of url among mentioned above which description is match with user's query: ${req.body.query}
+                Output formate: 5. No need to write extra line only return one of this link index & you must have to return one index of link.`;
             
             const result = await model.generateContent(prompt);
             const response = result.response;
             let text = response.text();
-            text = text.slice(0,-2);
+            text = parseInt(text.slice(0,-2));
             res.status(201).send({ url: text });
         }
 
